@@ -17,6 +17,7 @@ def main():
     weCom_webhook = os.environ.get('WECOM_WEBHOOK')
     bark_deviceKey = os.environ.get('BARK_DEVICEKEY')
     feishu_deviceKey = os.environ.get('FEISHU_DEVICEKEY')
+    bark_icon = os.environ.get('BARK_ICON')
 
     message_tokens = {
         'pushplus_token': pushplus_token,
@@ -43,7 +44,7 @@ def main():
     message_all = re.sub('\n+', '\n', message_all).rstrip('\n')
 
     message_send = MessageSend()
-    message_send.send_all(message_tokens, title, message_all)
+    message_send.send_all(message_tokens, title, message_all, bark_icon)
 
     print('finish')
 

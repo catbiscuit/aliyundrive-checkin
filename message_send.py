@@ -17,7 +17,7 @@ class MessageSend:
         assert token_name not in self.sender, "Register fails, the token name exists."
         self.sender[token_name] = callback
 
-    def send_all(self, message_tokens, title, content):
+    def send_all(self, message_tokens, title, content, icon):
         def check_valid_token(token):
             if isinstance(token, type(None)):
                 return False
@@ -31,11 +31,11 @@ class MessageSend:
             token_value = message_tokens[token_key]
             if token_key in self.sender and check_valid_token(token_value):
                 try:
-                    ret = self.sender[token_key](token_value, title, content)
+                    ret = self.sender[token_key](token_value, title, content, icon)
                 except:
                     print(f"[Sender]Something wrong happened when handle {self.sender[token_key]}")
 
-    def pushplus(self, token, title, content):
+    def pushplus(self, token, title, content, icon):
         assert type(token) == str, "Wrong type for pushplus token."
         content = content.replace("\n", "\n\n")
         payload = {
@@ -54,7 +54,7 @@ class MessageSend:
             return -1
         return 0
 
-    def serverChan(self, sendkey, title, content):
+    def serverChan(self, sendkey, title, content, icon):
         assert type(sendkey) == str, "Wrong type for serverChan token."
         content = content.replace("\n", "\n\n")
         payload = {
@@ -70,7 +70,7 @@ class MessageSend:
             return -1
         return 0
 
-    def weCom(self, tokens, title, content):
+    def weCom(self, tokens, title, content, icon):
         proxy_url = None
         to_user = None
         tokens = tokens.split(",")
@@ -118,7 +118,7 @@ class MessageSend:
             return -1
         return 0
 
-    def weCom_bot(self, webhook, title, content):
+    def weCom_bot(self, webhook, title, content, icon):
         assert type(webhook) == str, "Wrong type for WeCom webhook token."
         assert "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?" in webhook, "Please use the whole webhook url."
         headers = {
@@ -139,7 +139,7 @@ class MessageSend:
             return -1
         return 0
 
-    def bark(self, device_key, title, content):
+    def bark(self, device_key, title, content, icon):
         assert type(device_key) == str, "Wrong type for bark token."
 
         url = "https://api.day.app/push"
@@ -153,6 +153,11 @@ class MessageSend:
             "device_key": device_key
         }
 
+        if not icon:
+            icon = ''
+        if len(icon) > 0:
+            url += '?icon=' + icon
+
         resp = requests.post(url, headers=headers, data=json.dumps(data))
         resp_json = resp.json()
         if resp_json["code"] == 200:
@@ -162,7 +167,7 @@ class MessageSend:
             return -1
         return 0
 
-    def feishu(self, device_key, title, content):
+    def feishu(self, device_key, title, content, icon):
         assert type(device_key) == str, "Wrong type for feishu token."
 
         url = f'https://open.feishu.cn/open-apis/bot/v2/hook/{device_key}'
