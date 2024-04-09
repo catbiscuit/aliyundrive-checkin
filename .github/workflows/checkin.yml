@@ -38,4 +38,5 @@ jobs:
           WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
           BARK_DEVICEKEY: ${{ secrets.BARK_DEVICEKEY }}
           FEISHU_DEVICEKEY: ${{ secrets.FEISHU_DEVICEKEY }}
+          BARK_ICON: ${{ secrets.BARK_ICON }}
       - uses: gautamkrishnar/keepalive-workflow@master
