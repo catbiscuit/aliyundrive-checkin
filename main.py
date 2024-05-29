@@ -19,6 +19,15 @@ def main():
     feishu_deviceKey = os.environ.get('FEISHU_DEVICEKEY')
     bark_icon = os.environ.get('BARK_ICON')
 
+    if not token_string:
+        print('不执行签到1,token为null')
+        return -1
+
+    token_string = token_string.strip()
+    if len(token_string) <= 3:
+        print('不执行签到2,token的值无效')
+        return -2
+
     message_tokens = {
         'pushplus_token': pushplus_token,
         'serverChan_token': serverChan_sendkey,
